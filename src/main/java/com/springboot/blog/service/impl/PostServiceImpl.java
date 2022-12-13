@@ -6,6 +6,7 @@ import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,6 +51,26 @@ public class PostServiceImpl implements PostService {
     public PostDto getPostById(Long id) {
         Post post= postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post","id",id));
         return mapToDTO(post);
+    }
+
+    @Override
+    @PutMapping("/{id}")
+    public PostDto updatePost(PostDto postDto, Long id) {
+
+       //get post by id from database
+        Post post= postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post","id",id));
+
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDescription());
+        post.setContent(postDto.getContent());
+        Post updatePost = postRepository.save(post);
+        return mapToDTO(updatePost);
+    }
+
+    @Override
+    public void deletePostById(Long id) {
+        Post post= postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post","id",id));
+        postRepository.delete(post);
     }
 
     //convert Entity into DTO
