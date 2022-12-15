@@ -3,6 +3,7 @@ package com.springboot.blog.controller;
 import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.service.PostService;
+import com.springboot.blog.utils.AppConstans;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +30,11 @@ public class PostController {
     @GetMapping
     public PostResponse getAllPosts(
      //Pagination (two parameter)
-     @RequestParam(value = "pageNo", defaultValue = "0",required = false) int pageNo,
-     @RequestParam(value = "pageSize", defaultValue = "10",required = false) int pageSize
+     @RequestParam(value = "pageNo", defaultValue = AppConstans.DEFAULT_PAGE_NUMBER,required = false) int pageNo,
+     @RequestParam(value = "pageSize", defaultValue = AppConstans.DEFAULT_PAGE_SIZE,required = false) int pageSize,
+     @RequestParam(value = "sortBy",defaultValue = AppConstans.DEFAULT_SORT_BY,required = false)String sortBy
     ) {
-        return postService.getAllPosts( pageNo,pageSize);
+        return postService.getAllPosts( pageNo,pageSize,sortBy);
     }
 
     //get post by Id
